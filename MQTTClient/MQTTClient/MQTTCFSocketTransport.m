@@ -10,6 +10,10 @@
 
 #import "MQTTLog.h"
 
+@interface MQTTCFSocketEncoder ()
+@property (strong, nonatomic) dispatch_queue_t queue;
+@end
+
 @interface MQTTCFSocketTransport() {
     void *QueueIdentityKey;
 }
@@ -99,6 +103,7 @@
     if (!connectError) {
         self.encoder.delegate = nil;
         self.encoder = [[MQTTCFSocketEncoder alloc] init];
+        self.encoder.queue = self.queue;
         CFWriteStreamSetDispatchQueue(writeStream, self.queue);
         self.encoder.stream = CFBridgingRelease(writeStream);
         self.encoder.delegate = self;

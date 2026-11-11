@@ -32,6 +32,13 @@ typedef NS_ENUM(NSInteger, MQTTCFSocketEncoderState) {
 
 - (void)open;
 - (void)close;
+
+/** Appends data to the outgoing buffer and writes as much as the stream accepts right now.
+ *  Bytes that cannot be written stay buffered and are flushed on NSStreamEventHasSpaceAvailable,
+ *  so this method never blocks on the socket, even for very large payloads.
+ *  @param data bytes to send, or nil to flush already buffered bytes
+ *  @return YES if the data was written or queued, NO if the encoder is not ready or the stream failed
+ */
 - (BOOL)send:(NSData *)data;
 
 @end
